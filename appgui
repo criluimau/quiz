@@ -1,0 +1,35 @@
+#!/usr/bin/python
+#! -*- coding: utf-8 -*-
+
+
+class appgui:
+  def __init__(self):
+    """
+    In this init we are going to display the main
+    serverinfo window
+    """
+    gladefile="project1.glade"
+    windowname="serverinfo"
+    self.wTree=gtk.glade.XML (gladefile,windowname)
+    # we only have two callbacks to register, but
+    # you could register any number, or use a
+    # special class that automatically
+    # registers all callbacks. If you wanted to pass
+    # an argument, you would use a tuple like this:
+    # dic = { "on button1_clicked" : \
+             (self.button1_clicked, arg1,arg2) , ...
+
+dic = { "on_button1_clicked" : \
+            self.button1_clicked,
+            "on_serverinfo_destroy" : \
+            (gtk.mainquit) }
+    self.wTree.signal_autoconnect (dic)
+    return
+
+#####CALLBACKS
+  def button1_clicked(self,widget):
+    print "button clicked"
+
+# we start the app like this...
+app=appgui()
+gtk.mainloop()
