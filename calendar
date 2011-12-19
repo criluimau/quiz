@@ -1,9 +1,0 @@
-#!/usr/bin/python
-#! -*- coding:utf-8 -*-
-import time
-import calendar
-
-
-
-my_cal = calendar.month(2010, 4)
-print my_cal
