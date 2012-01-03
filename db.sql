@@ -26,7 +26,7 @@ CREATE TABLE `domande` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `testo` text NOT NULL,
   `argomento_id` int(11) NOT NULL,
-  `tipo_risposta` text NOT NULL COMMENT 'm = multipla; 0 = ordinamento',
+  `tipo_risposta` text COMMENT 'm = multipla; 0 = ordinamento',
   `difficolta` int(11) NOT NULL COMMENT 'valore 0 min - 10max',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -52,7 +52,7 @@ CREATE TABLE `materia` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `argomento` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,6 +61,7 @@ CREATE TABLE `materia` (
 
 LOCK TABLES `materia` WRITE;
 /*!40000 ALTER TABLE `materia` DISABLE KEYS */;
+INSERT INTO `materia` VALUES (4,'jsp'),(5,'php');
 /*!40000 ALTER TABLE `materia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,6 +92,30 @@ LOCK TABLES `questionario` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `risposte`
+--
+
+DROP TABLE IF EXISTS `risposte`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `risposte` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_domanda` text NOT NULL,
+  `valore` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `risposte`
+--
+
+LOCK TABLES `risposte` WRITE;
+/*!40000 ALTER TABLE `risposte` DISABLE KEYS */;
+/*!40000 ALTER TABLE `risposte` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `scheda`
 --
 
@@ -102,7 +127,6 @@ CREATE TABLE `scheda` (
   `domanda_id` int(11) NOT NULL,
   `risposta` text NOT NULL,
   `id_utente` int(11) NOT NULL,
-  `data_schema` date NOT NULL,
   `id_questionario` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -129,7 +153,7 @@ CREATE TABLE `utente` (
   `login` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,7 +162,7 @@ CREATE TABLE `utente` (
 
 LOCK TABLES `utente` WRITE;
 /*!40000 ALTER TABLE `utente` DISABLE KEYS */;
-INSERT INTO `utente` VALUES (1,'pippo','pippopass');
+INSERT INTO `utente` VALUES (7,'uuu','123456'),(6,'mau1','r'),(5,'mauri','ma'),(4,'nnn','123456'),(8,'nnn','123'),(9,'nnn','123'),(10,'ttt','123'),(11,'Admin','1'),(12,'n','n'),(13,'',''),(14,'luigi','asd');
 /*!40000 ALTER TABLE `utente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -151,4 +175,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-12-13 10:03:07
+-- Dump completed on 2011-12-15  9:09:44

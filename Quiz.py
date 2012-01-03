@@ -38,8 +38,20 @@ def listamaterie():
 	else:
 		for a in lista:
 			materie.append(a[0])
-			print a[0]+ " " +str(a[1])
+			print a[0]+ " id: " +str(a[1])
 	return materie
+
+def listamaterid():
+	print "\n\nLISTA MATERIE PRESENTI:"
+	lista=DR1.lista_materie()
+	materid = []
+	if len(lista) == 0:
+		print "nessuna materia presente"
+	else:
+		for a in lista:
+			materid.append(a[1])
+			print a[0]+ " id: " +str(a[1])
+	return materid
 
 def listautenti():
 	print "\n\nLISTA UTENTI:"
@@ -187,14 +199,13 @@ while user_admin:
 		print "9 - Fine"
 		print "=========================================="
 		opzioni = (1,2,8,9)
-		scelta = sceltamenu(opzioni)
+		scelta1 = sceltamenu(opzioni)
 		
-		if scelta==1:
+		if scelta1==1:
 			listautenti()
 			continua()
-			continue
-
-		while scelta==2:
+			
+		while scelta1==2:
 			lista = listautenti()
 			risp = False
 			while risp == False:
@@ -209,14 +220,14 @@ while user_admin:
 			err      = RispFun[0]
 			msg      = RispFun[1]
 			print msg
+
 			risp = rispsino("Vuoi continuare?")
 			if risp == 'N':
 				break
-			continue
-
-		if scelta == 8:
+			
+		if scelta1 == 8:
 			break
-		if scelta == 9:
+		if scelta1 == 9:
 			db1.connection_off()
 			sys.exit(0)
 
@@ -232,9 +243,9 @@ while user_admin:
 		print "9 - Fine"
 		print "=========================================="
 		opzioni = (1,2,3,8,9)
-		scelta = sceltamenu(opzioni)
+		scelta2 = sceltamenu(opzioni)
 
-		while scelta==1:
+		while scelta2==1:
 			materie=listamaterie()
 			nome_materia= raw_input("Inserisci una Materia: ")
 			if nome_materia in materie:
@@ -244,112 +255,133 @@ while user_admin:
 				err         = RispFun[0]
 				msg         = RispFun[1]
 				print msg
+
 			risp = user_new=rispsino("Vuoi continuare?") 
 			if risp == "N":
 				break
-			else:
-				continue
-
-		while scelta==2:
+								
+		while scelta2==2:
 			materie=listamaterie()
-			nome_materia=raw_input('per favore inserisci la materia da modificare: ')
+			nome_materia=raw_input('Inserisci la materia da modificare: ')
 			if nome_materia in materie:
 				nuovo_nome=raw_input("Inserisci il nuovo nome: ")
 				if nuovo_nome not in materie and len(nuovo_nome) != 0:
-					db1.update("materia SET argomento='"+nuovo_nome+"' WHERE argomento='"+nome_materia+"';")	
-					b = raw_input('Ok, operazione eseguita con successo, Vuoi modificare un altra materia? S|N: ')
-					if b == "S" or b == "s":
-						scelta = 4
-					else:
-						scelta = 0
-						b = "0"
+					RispFun     = DR1.modifica_materia(nome_materia, nuovo_nome)
+					err         = RispFun[0]
+					msg         = RispFun[1]
+					print msg
 				else:
-					print "Il nome della materia da modifare è inesistente o è già stato modificato in precedenza, per favore controlla nuovamente"
-					scelta = 4
+					print "Il nome della nuova materia esiste già o non è stata immessa"				
 			else:
-				scelta = 0
+				print "Il nome della materia da modificare è inesistente o è già stato modificato in precedenza, per favore controlla nuovamente"
 				
-		while scelta==3:
-				select= db1.select("argomento,id" ,"materia")
-				materie = []
-				for a in select:
-					materie.append(a[0])
-					print a[0]+ " " +str(a[1])
-				del_materia = raw_input('per favore inserisci il nome utente che si desidera cancellare: ')
-				if del_materia in materie:
-					db1.delete("materia WHERE argomento='"+del_materia+"'")
-					print("la materia," +del_materia+ "è stata cancellata correttamente")
-					back = raw_input('Vuoi tornare al menu principale? s - n: ')
-					if back == "s" or back == "S":
-						scelta = 0
-				else:
-					print("il nome della materia che si è immesso è errato o non esistente")
-					riprova = raw_input('Vuoi riprovare? s/n')
-					if riprova == "s" or riprova == "S":
-						scelta = 5
-					if riprova != "s" or riprova != "S":
-						scelta = 0 
- 
-		if scelta == 8:
+			risp = user_new=rispsino("Vuoi continuare?") 
+			if risp == "N":
+				break
+						
+		while scelta2==3:
+			materie=listamaterie()
+			del_materia = raw_input('Inserisci il nome della materia che si desidera cancellare: ')
+			if del_materia in materie:
+				RispFun     = DR1.cancella_materia(del_materia)
+				err         = RispFun[0]
+				msg         = RispFun[1]
+				print msg
+			else:
+				print("il nome della materia che si è immesso è errato o non esistente")
+
+			risp = user_new=rispsino("Vuoi continuare?") 
+			if risp == "N":
+				break
+		 
+		if scelta2 == 8:
 			break
-		if scelta == 9:
+		if scelta2 == 9:
 			db1.connection_off()
 			sys.exit(0)
-
+		
 	while scelta == 3:	
 		print "\n=========================================="
 		print "         MENU' GESTIONE DOMANDE"
 		print "\nScegli un'operazione: "
 		print "1 - Crea domande"
-		print "2 - Cancella domande"
+		print "2 - Cancella domande e risposte"
 		print ""
 		print "8 - Ritorna al menù principale"
 		print "9 - Fine"
 		print "=========================================="
 		opzioni = (1,2,8,9)
-		scelta = sceltamenu(opzioni)
+		scelta3 = sceltamenu(opzioni)
 		
-		while scelta==6:
-				select= db1.select("argomento,id" ,"materia")
-				materie = []
-				for a in select:
-					materie.append(a[1])
-					print a[1]," " ,a[0]	
-				id_argomento= input("Inserisci id della materia dove vuoi aggiungere la domanda")
-				if id_argomento in materie:
-					print "ok, hai selezionato la materia", id_argomento
-					testo_domanda = raw_input("Inserisci adesso il testo della domanda")
-					difficolta= input('per favore inserisci la difficolta della domanda in una scala da 1 a 10')
-					if len(testo_domanda) > 10 and difficolta in range(1,10):
-						db1.insert("domande (testo, argomento_id ,difficolta) VALUES('"+testo_domanda+"','"+str(id_argomento)+"','"+str(difficolta)+"')")
-						intero= True
-						while intero:
-							n = raw_input('inserisci il numero delle risposte da assegnare alla domanda')
-							try:
-								n = int(n)
-							except:
-								n = 3
-							if type(n) is int:
-								intero=False
-											
-						id_domanda = db1.select("id", "domande WHERE testo='"+testo_domanda+"'")
-						reg_domanda = id_domanda[0][0]
-						for p in range(0,n):
-							controllo = 0
-							while controllo == 0:
-								risposta_domanda= raw_input('inserisci la risposta alla domanda')
-								valore= input('La risposta inserita è vera o falsa? 1|0')
-								if valore == 1 or valore == 0:							
-									db1.insert("risposte (id_domanda, testo, valore) VALUES ('"+str(reg_domanda)+"','"+risposta_domanda+"','"+str(valore)+"')")
-									controllo = 1
-									print "Risposta inserita correttamente"
-						print "hai inserito tutte le risposte e la domanda è stata registrata correttamente"
-					c = raw_input('"s" per inserire una nuova domanda? o "n" uscire s|n')
-					if c == "s" or c == "S":
-						scelta = 6
-					else:
-						scelta = 0
-		while scelta==7:
+		while scelta3==1:
+			materie=listamaterie()
+			materid=listamaterid()
+			risp = False
+			while risp == False:
+				try:
+					id_argomento= input("Inserisci id della materia dove vuoi aggiungere la domanda ")			
+				except:
+					print "Inserisci un id della materia valido"
+					continue
+				if id_argomento in materid:
+					risp = True
+					break
+				else:					
+					print("L'id materia immesso è errato o non esistente")
+			id =  materid.index(id_argomento)
+			print "ok, hai selezionato la materia", materie[id], "id:", id_argomento
+			testo_domanda = ""
+			difficolta = 0
+			while len(testo_domanda) < 10 or difficolta not in range(1,10):
+				testo_domanda = raw_input("Inserisci adesso il testo della domanda ")
+				try:
+					difficolta= input('per favore inserisci la difficolta della domanda in una scala da 1 a 10 ')
+				except:
+					continue
+			count = 0
+			risp = 'N'
+			verofalso = False
+			while risp == 'N' or not verofalso or count < 2:
+				print "inserisci almeno 2 risposte di cui una vera"
+				risposta_domanda=""
+				valore=2
+				while len(risposta_domanda) < 10:
+					risposta_domanda= raw_input('inserisci la risposta alla domanda: '+testo_domanda+' ')
+				while valore !=0 and valore !=1:
+					try:
+						valore= input('La risposta inserita è vera o falsa? 1|0')
+					except:
+						continue
+				if valore == 0:
+					verofalso = True
+				count = count+1
+				# inserisce domanda
+				if count == 1:
+					RispFun = DR1.inserisci_domanda(testo_domanda,id_argomento,difficolta)
+					err     = RispFun[0]
+					msg     = RispFun[1]
+				if count == 1 and err==True:
+					print msg
+					continua()
+					break
+				# recupera id domanda
+				lista = DR1.recuperaid_domanda(testo_domanda,id_argomento)
+				id_domanda = lista[0][0]
+				# inserisci risposta
+				RispFun = DR1.inserisci_risposta(id_domanda,risposta_domanda,valore)
+				err     = RispFun[0]
+				msg     = RispFun[1]					
+				if err==True:
+					print msg
+					continua()
+				if verofalso and count >= 2:
+					risp = rispsino("Vuoi continuare ad inserire risposte?")
+
+			risp = rispsino("Vuoi continuare ad inserire domande?")
+			if risp == "N":
+				break
+					
+		while scelta3==2:
 				select= db1.select("id,argomento" ,"materia")
 				materie = []
 				for a in select:
@@ -379,9 +411,9 @@ while user_admin:
 							if riprova != "s" or riprova != "S":
 								scelta = 0
 
-		if scelta == 8:
+		if scelta3 == 8:
 			break
-		if scelta == 9:
+		if scelta3 == 9:
 			db1.connection_off()
 			sys.exit(0)
 
@@ -395,14 +427,14 @@ while user_admin:
 		print "9 - Fine"
 		print "=========================================="
 		opzioni = (1,8,9)
-		scelta = sceltamenu(opzioni)
+		scelta4 = sceltamenu(opzioni)
 		
-		if scelta == 1:
+		if scelta4 == 1:
 			menuutente = True
 			break
-		if scelta == 8:
+		if scelta4 == 8:
 			break
-		if scelta == 9:
+		if scelta4 == 9:
 			db1.connection_off()
 			sys.exit(0)
 	if menuutente == True:

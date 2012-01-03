@@ -46,3 +46,51 @@ class DomaRisp:
 		RispFun.append(err)
 		RispFun.append(msg)			
 		return RispFun
+	
+	def modifica_materia(self,materia, nuovo_nome):
+		RispFun = []
+		err=self.db1.update("materia SET argomento='"+nuovo_nome+"' WHERE argomento='"+materia+"';")
+		if not err:
+			msg = "Materia "+materia+" cambiata in "+nuovo_nome+" correttamente"
+		else:
+			msg = "ERRORE: Materia "+materia+" NON cambiata in "+nuovo_nome
+		RispFun.append(err)
+		RispFun.append(msg)			
+		return RispFun
+	
+	def cancella_materia(self,materia):
+		RispFun = []
+		err=self.db1.delete("materia WHERE argomento='"+materia+"'")
+		if not err:
+			msg = "Materia "+materia+" cancellata correttamente"
+		else:
+			msg = "ERRORE: Materia "+materia+" NON cancellata"
+		RispFun.append(err)
+		RispFun.append(msg)			
+		return RispFun
+
+	def inserisci_domanda(self,testo_domanda,id_argomento,difficolta):
+		RispFun = []
+		err=self.db1.insert("domande (testo, argomento_id ,difficolta) VALUES('"+testo_domanda+"','"+str(id_argomento)+"','"+str(difficolta)+"')")
+		if not err:
+			msg = "Domanda "+testo_domanda+" inserita correttamente"
+		else:
+			msg = "ERRORE: inserimento domanda "+testo_domanda
+		RispFun.append(err)
+		RispFun.append(msg)			
+		return RispFun
+		
+	def recuperaid_domanda(self,testo_domanda,id_argomento):
+		lista=self.db1.select("id", "domande WHERE testo='"+testo_domanda+"' AND id='"+str(id_argomento)+"'")
+		return lista
+		
+	def inserisci_risposta(self,id_domanda,risposta_domanda,valore):
+		RispFun = []
+		err=self.db1.insert("risposte (id_domanda, testo, valore) VALUES ('"+str(id_domanda)+"','"+risposta_domanda+"','"+str(valore)+"')")
+		if not err:
+			msg = "Risposta "+risposta_domanda+" inserita correttamente"
+		else:
+			msg = "ERRORE: inserimento risposta domanda "+risposta_domanda
+		RispFun.append(err)
+		RispFun.append(msg)			
+		return RispFun
