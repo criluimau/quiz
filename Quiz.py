@@ -33,7 +33,7 @@ def listamaterie():
 	print "\n\nLISTA MATERIE PRESENTI:"
 	lista=DR1.lista_materie()
 	materie = []
-	if len(materie == 0):
+	if len(lista) == 0:
 		print "nessuna materia presente"
 	else:
 		for a in lista:
