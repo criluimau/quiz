@@ -7,15 +7,15 @@ class Db:
 		
 		def __init__(self,hostname,user,passwd,dbname):
 				
-			self.hostname = hostname
-			self.dbname = dbname
-			self.passwd = passwd
-			self.user = user
+			self.__hostname = hostname
+			self.__dbname = dbname
+			self.__passwd = passwd
+			self.__user = user
 			
 		
 		def connection_on(self):
 			
-			self.conn = Db.MySQLdb.connect(self.hostname,self.user,self.passwd,self.dbname)
+			self.conn = Db.MySQLdb.connect(self.__hostname,self.__user,self.__passwd,self.__dbname)
 			self.cursor = self.conn.cursor()
 
 		def connection_off(self):
@@ -47,9 +47,8 @@ class Db:
 		
 		
 		def insert(self,i):
-			
 			sql = "INSERT INTO "+i
-
+			
 			try:
 				self.cursor.execute(sql)
 				self.conn.commit()

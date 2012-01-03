@@ -1,2 +1,4 @@
-Il presente progetto è in corso di sviluppo da parte di studenti in fase di apprendimento del linguaggio python e dell'utilizzo di github.
+Il presente progetto è in fase di sviluppo da parte di studenti che stanno apprendendo il linguaggio python e l'utilizzo di glade, Mysql nonchè di github.
 Per ulteriori approfondimenti sul progetto vedi la presentazione del progetto: quiz.odp.
+
+Importazione database: mysql quiz -u root -p < db.sql
