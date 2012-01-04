@@ -2,7 +2,7 @@
 #! -*- coding: utf-8 -*-
 
 import sys, string, datetime, time
-import Db, utente, DomaRisp
+import Db, utente, DomaRisp, Questionario
 
 #try:
 # import pygtk
@@ -29,9 +29,61 @@ import Db, utente, DomaRisp
 # funzioni
 # *************************************
 
-def listarisposteid(iddomanda):
-	print "\n\nLISTA RISPOSTE PRESENTI NELLA DOMANDA CON ID: "+str(iddomanda)
-	lista=DR1.lista_risposte_xid(iddomanda)
+def risultato(id_quest):
+	record   = Quest1.dati_quest(id_quest)
+
+	domande  = 0
+	risp_err = 0
+	risp_ok  = 0
+	start    = -1
+	err   = 0
+	ok    = 0
+
+	for s in record:
+		if start != s[0]:
+			start = s[0]
+			domande = domande + 1
+			if err > 0:
+				risp_err = risp_err+1
+			if ok  > 0 and err == 0:
+				risp_ok  = risp_ok+1
+			err = 0
+			ok  = 0
+		if s[2] != s[3]:
+			err = err+1
+		else:
+			ok  = ok+1
+	if err > 0:
+		risp_err = risp_err+1
+	if ok  > 0 and err == 0:
+		risp_ok  = risp_ok+1
+
+	if domande > 0:
+		perc = 1.0 * risp_ok/domande * 100.0
+
+		giudizio = "Sei grande!"
+		if perc < 90:
+			giudizio = "ottimo"
+		if perc < 80:
+			giudizio = "distinto"
+		if perc < 70:
+			giudizio = "sufficiente"
+		if perc < 60:
+			giudizio = "insufficiente"
+		if perc < 50:
+			giudizio = "scarso"
+		if perc < 30:
+			giudizio = "Studia!"
+											
+		print "domande fatte  ", domande
+		print "risposta ok    ", risp_ok
+		print "risposte errate", risp_err
+		print "Giudizio finale", giudizio
+
+
+def listarisposteid(id_domanda):
+	print "\n\nLISTA RISPOSTE PRESENTI NELLA DOMANDA CON ID: "+str(id_domanda)
+	lista=DR1.lista_risposte_xid(id_domanda)
 	risposteid = []
 	if len(lista) == 0:
 		print "nessuna risposta presente"
@@ -41,9 +93,9 @@ def listarisposteid(iddomanda):
 			print a[1]+ " id: " +str(a[0])
 	return risposteid
 
-def listadomandeid(idmateria, materia):
+def listadomandeid(id_materia, materia):
 	print "\n\nLISTA DOMANDE PRESENTI PER MATERIA: "+materia
-	lista=DR1.lista_domande_xid(idmateria)
+	lista=DR1.lista_domande_xid(id_materia)
 	domandeid = []
 	if len(lista) == 0:
 		print "nessuna domanda presente"
@@ -120,11 +172,13 @@ hostname = 'localhost'
 db = 'quiz'
 db_user = 'root'
 db_passwd = 'red'
+# Inizializzazione oggetto Database
 db1 = Db.Db(hostname,db_user,db_passwd,db)
 db1.connection_on()
-
 # Inizializzazione oggetto Domande/risposte
 DR1 = DomaRisp.DomaRisp(db1)
+# Inizializzazione oggetto questionario
+Quest1 = Questionario.Questionario(db1)
 
 # login
 autenticato = False
@@ -411,21 +465,21 @@ while user_admin:
 			risp = False
 			while risp == False:
 				try:
-					idmateria = input("A quale id argomento corrisponde la domanda\e che vuoi cancellare? ")
+					id_materia = input("A quale id argomento corrisponde la domanda\e che vuoi cancellare? ")
 				except:
 					print "inserisce un ID argomento valido"
 					continue
-				if idmateria == 0:
+				if id_materia == 0:
 					break
-				if idmateria in materieid:
+				if id_materia in materieid:
 					risp=True
 				else:
 					print "L'ID argomento inserito non esiste"
-			if idmateria == 0:
+			if id_materia == 0:
 					break
 			# richiesta id domanda
-			materia = materie[materieid.index(idmateria)]
-			domandeid=listadomandeid(idmateria, materia)
+			materia = materie[materieid.index(id_materia)]
+			domandeid=listadomandeid(id_materia, materia)
 			print "Inserisci 0 per uscire"
 			if len(domandeid) == 0:
 				print "Non ci sono domande per l'argomento scelto"
@@ -433,17 +487,17 @@ while user_admin:
 			risp = False
 			while risp == False:
 				try:
-					iddomanda = input("A quale id domanda corrisponde la domanda che vuoi cancellare? ")
+					id_domanda = input("A quale id domanda corrisponde la domanda che vuoi cancellare? ")
 				except:
 					print "inserisce un ID domanda valido"
 					continue
-				if iddomanda == 0:
+				if id_domanda == 0:
 					break					
-				if iddomanda in domandeid:
+				if id_domanda in domandeid:
 					risp=True
 				else:
 					print "L'ID domanda inserito non esiste"
-			if iddomanda == 0:
+			if id_domanda == 0:
 				break					
 
 			# richiesta id risposta
@@ -454,7 +508,7 @@ while user_admin:
 				# cancella domanda in assenza di risposte
 				if len(rispostaid) == 0:
 					print "cancello domanda in assenza di risposte"
-					RispFun = DR1.cancella_domanda(iddomanda)
+					RispFun = DR1.cancella_domanda(id_domanda)
 					err     = RispFun[0]
 					msg     = RispFun[1]					
 					print msg
@@ -462,20 +516,20 @@ while user_admin:
 				risp = False
 				while risp == False:
 					try:
-						idrisposta = input("A quale id risposta corrisponde la risposta che vuoi cancellare? ")
+						id_risposta = input("A quale id risposta corrisponde la risposta che vuoi cancellare? ")
 					except:
 						print "inserisce un ID risposta valido"
 						continue
-					if idrisposta == 0:
+					if id_risposta == 0:
 						break
-					if idrisposta in rispostaid:
+					if id_risposta in rispostaid:
 						risp=True
 					else:
 						print "L'ID risposta inserito non esiste"
-				if idrisposta == 0:
+				if id_risposta == 0:
 						break
 				# cancella risposta
-				RispFun = DR1.cancella_risposta(idrisposta)
+				RispFun = DR1.cancella_risposta(id_risposta)
 				err     = RispFun[0]
 				msg     = RispFun[1]				
 				if err==True:
@@ -515,59 +569,81 @@ while user_admin:
 			sys.exit(0)
 	if menuutente == True:
 		break		# passo a menù utente
-		
-
 
 # ===============================
 # menù iniziale utente
 # ===============================
 
 print "Benvenuto al programma Quiz+, avrai ora la possibilità di verificare le tue competenze e scoprire se hai studiato!!"
-select= db1.select("argomento,id" ,"materia")
-materie = []
-for a in select:
-		materie.append(a[1])
-		print a[1]," " ,a[0]	
-materia= input("Inserisci id della materia del questionario")
-if materia in materie:
-	print "ok, hai selezionato la materia", materia, "il quiz sta per cominciare"
-			# preparazione questionario
+materie=listamaterie()
+materieid=caricamaterid()
+risp = False
+while not risp:
+	try:
+		id_materia= input("Inserisci id della materia del questionario ")
+	except:
+		print "inserisce un id materia valido"
+		continue
+	if id_materia in materieid:
+		materia = materie[materieid.index(id_materia)]
+		risp = True
+		print "ok, hai selezionato la materia", materia, "il quiz sta per cominciare"
+	else:
+		print "l'ID materia inserito non è fra quelli disponibili"
+		continue
+		
+	# estrazione domande da sottoporre all'utente
 	maxDomande = 10
+	D = DR1.domanda(maxDomande,id_materia)		
+	if len(D) == 0:
+		print "Mi dispiace ma non ci sono domande per questa materia!:"
+		risp = False
+		continue
+	# preparazione questionario
 	oggi       = datetime.datetime.today()
 	oggi       = oggi.date()
 	oggi       = str(oggi)
-	record     = db1.select("*", "utente WHERE login='"+user_name+"'")
-	utenteid   = record[0][0]
-	convalida  = "0"
+	id_utente  = user.recuperaid_utente(user_name)
 
-	inserisco = db1.insert("questionario (data,utente_id,nr_max_domande,convalida) VALUES ('"+oggi+"',"+str(utenteid)+","+str(maxDomande)+","+convalida+")")
-	id_quest  = db1.select("max(id)","questionario WHERE utente_id='"+str(utenteid)+"'")
+	# Apertura nuovo questionario
+	RispFun = Quest1.inserisci_quest(oggi,id_utente,maxDomande)
+	err     = RispFun[0]
+	msg     = RispFun[1]
+	if err:
+		print msg
+		break
+	id_quest   = Quest1.recuperaid_quest(id_utente)
 
-		# estrazione domande da dizionario
-	D = DR1.domanda(maxDomande,materia)		
-
-		# estrazione risposte alle domande e scrittura schede
+	# estrazione risposte alle domande e scrittura file schede
 	for n in D:
 		id_domanda = n[0]
 		R = DR1.risposta(id_domanda)
 		for nrrisp in R:
-			inserisco = db1.insert("scheda (domanda_id,risposta_ok,id_utente,id_questionario,id_risposta,risposta_ute) VALUES ("+str(id_domanda)+","+str(nrrisp[2])+","+str(utenteid)+","+str(id_quest[0][0])+","+str(nrrisp[0])+","+str(0)+")")
+			RispFun = Quest1.riempi_quest(id_domanda, nrrisp[2], id_utente, id_quest, nrrisp[0], nrrisp[3])
+			err     = RispFun[0]
+			msg     = RispFun[1]
+			if err:
+				print "ATTENZIONE: ",msg
 		
-	#richiesta delle risposte all'utente
+	#Sottopongo ogni singola domanda all'utente
 	for s in D:
 		print s[1]
 		id_domanda = s[0]
+		# recupero tutte le risposte alla domanda dal file schede
 		R = DR1.risposta(id_domanda)
-		
+
+		# Sottopongo le risposte all'utente e
+		# memorizzo le risposte dell'utente nella lista "risposte".
 		risposte = []
 		key_risp = []
 		a=0
 		for s1 in R:
 			risposte.append(s1[0])
-			print "n° ", a, " ", s1[3] 
+			print "n° ", a, " ", s1[2] 
 			a=a+1
-			RQ  = db1.select("*","scheda WHERE id_questionario="+str(id_quest[0][0])+" and domanda_id = "+str(id_domanda)+" and id_risposta= "+str(s1[0])+"")
-			key_risp.append(RQ[0])
+			# recupera id dell'attuale risposta dal file scheda
+			id_scheda = Quest1.recuperaid_scheda(id_quest, id_domanda, s1[0])
+			key_risp.append(id_scheda)
 		
 		risposta = -1
 		while risposta not in range (0,a):
@@ -577,64 +653,18 @@ if materia in materie:
 			except:
 				risposta = -1
 
-		db1.update("scheda SET risposta_ute=1 WHERE id_risposta='"+str(risposte[risposta])+"' AND id="+str(key_risp[risposta][0]))
-					
-		 #	err=db1.insert("utente (login, pass) VALUES('"+user_name+"','"+user_passwd+"')")
-		
+		# scrivo in scheda la risposta dell'utente
+		RispFun = Quest1.aggiorna_scheda(risposte[risposta], key_risp[risposta])
+		err     = RispFun[0]
+		msg     = RispFun[1]
+		if err:
+			print "ATTENZIONE: ",msg
+
 
 # giudizione finale
-id_questionario=id_quest[0][0]	
-record     = db1.select("domanda_id, id_risposta, risposta_ute, risposta_ok", "scheda WHERE id_questionario='"+str(id_questionario)+"' group by domanda_id, id_risposta, risposta_ute, risposta_ok")
+risultato(id_quest)
 
-domande  = 0
-risp_err = 0
-risp_ok  = 0
-start    = -1
-err   = 0
-ok    = 0
-
-for s in record:
-	if start != s[0]:
-		start = s[0]
-		domande = domande + 1
-		if err > 0:
-			risp_err = risp_err+1
-		if ok  > 0 and err == 0:
-			risp_ok  = risp_ok+1
-		err = 0
-		ok  = 0
-	if s[2] != s[3]:
-		err = err+1
-	else:
-		ok  = ok+1
-if err > 0:
-	risp_err = risp_err+1
-if ok  > 0 and err == 0:
-	risp_ok  = risp_ok+1
-
-if domande > 0:
-	perc = 1.0 * risp_ok/domande * 100.0
-
-	giudizio = "Sei grande!"
-	if perc < 90:
-		giudizio = "ottimo"
-	if perc < 80:
-		giudizio = "distinto"
-	if perc < 70:
-		giudizio = "sufficiente"
-	if perc < 60:
-		giudizio = "insufficiente"
-	if perc < 50:
-		giudizio = "scarso"
-	if perc < 30:
-		giudizio = "Studia!"
-										
-	print "domande fatte  ", domande
-	print "risposta ok    ", risp_ok
-	print "risposte errate", risp_err
-	print "Giudizio finale", giudizio
-
-		
+# uscita		
 db1.connection_off()
 sys.exit(0)
 

@@ -80,7 +80,7 @@ CREATE TABLE `questionario` (
   `nr_max_domande` int(11) NOT NULL,
   `convalida` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,6 +89,7 @@ CREATE TABLE `questionario` (
 
 LOCK TABLES `questionario` WRITE;
 /*!40000 ALTER TABLE `questionario` DISABLE KEYS */;
+INSERT INTO `questionario` VALUES (1,'2012-01-04',15,10,0),(2,'2012-01-04',16,10,0),(3,'2012-01-04',16,10,0),(4,'2012-01-04',16,10,0),(5,'2012-01-04',16,10,0),(6,'2012-01-04',16,10,0),(7,'2012-01-04',16,10,0),(8,'2012-01-04',16,10,0),(9,'2012-01-04',16,10,0),(10,'2012-01-04',16,10,0),(11,'2012-01-04',16,10,0),(12,'2012-01-04',16,10,0),(13,'2012-01-04',16,10,0),(14,'2012-01-04',16,10,0),(15,'2012-01-04',16,10,0),(16,'2012-01-04',16,10,0),(17,'2012-01-04',16,10,0),(18,'2012-01-04',16,10,0),(19,'2012-01-04',16,10,0);
 /*!40000 ALTER TABLE `questionario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,8 +132,11 @@ CREATE TABLE `scheda` (
   `risposta` text NOT NULL,
   `id_utente` int(11) NOT NULL,
   `id_questionario` int(11) NOT NULL,
+  `id_risposta` int(11) NOT NULL,
+  `risposta_ute` tinyint(1) NOT NULL,
+  `risposta_ok` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=92 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -141,6 +145,7 @@ CREATE TABLE `scheda` (
 
 LOCK TABLES `scheda` WRITE;
 /*!40000 ALTER TABLE `scheda` DISABLE KEYS */;
+INSERT INTO `scheda` VALUES (1,16,'nice   ',16,12,20,0,1),(2,13,'elenca tutti i file contenuti nella directory corrente',16,14,12,0,0),(3,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',16,14,13,0,0),(4,13,'elenca tutti i file nella directory corrente che contengono la parola fine',16,14,14,0,1),(5,15,'dpkg -configure a',16,14,17,0,0),(6,15,'apt-get -f install',16,14,18,0,1),(7,16,'prty   ',16,14,19,0,0),(8,16,'nice     ',16,14,20,0,1),(9,14,'file * /bin/* | grep -i script',16,14,15,0,1),(10,14,'grep -c script /bin/*',16,14,16,0,0),(11,17,'/config ',16,14,21,0,0),(12,17,'/etc  ',16,14,22,0,0),(13,17,'/boot',16,14,23,0,0),(14,17,'/etc/fstab',16,14,24,0,1),(15,12,'/etc/passw',16,14,10,0,0),(16,12,'/etc/shadow',16,14,11,0,1),(17,17,'/config ',16,15,21,0,0),(18,17,'/etc  ',16,15,22,0,0),(19,17,'/boot',16,15,23,0,0),(20,17,'/etc/fstab',16,15,24,0,1),(21,13,'elenca tutti i file contenuti nella directory corrente',16,15,12,0,0),(22,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',16,15,13,0,0),(23,13,'elenca tutti i file nella directory corrente che contengono la parola fine',16,15,14,0,1),(24,12,'/etc/passw',16,15,10,0,0),(25,12,'/etc/shadow',16,15,11,0,1),(26,15,'dpkg -configure a',16,15,17,0,0),(27,15,'apt-get -f install',16,15,18,0,1),(28,14,'file * /bin/* | grep -i script',16,15,15,0,1),(29,14,'grep -c script /bin/*',16,15,16,0,0),(30,16,'prty   ',16,15,19,0,0),(31,16,'nice     ',16,15,20,0,1),(32,15,'dpkg -configure a',16,16,17,0,0),(33,15,'apt-get -f install',16,16,18,1,1),(34,16,'prty   ',16,16,19,0,0),(35,16,'nice     ',16,16,20,1,1),(36,13,'elenca tutti i file contenuti nella directory corrente',16,16,12,0,0),(37,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',16,16,13,0,0),(38,13,'elenca tutti i file nella directory corrente che contengono la parola fine',16,16,14,1,1),(39,14,'file * /bin/* | grep -i script',16,16,15,1,1),(40,14,'grep -c script /bin/*',16,16,16,0,0),(41,17,'/config ',16,16,21,0,0),(42,17,'/etc  ',16,16,22,0,0),(43,17,'/boot',16,16,23,0,0),(44,17,'/etc/fstab',16,16,24,1,1),(45,12,'/etc/passw',16,16,10,0,0),(46,12,'/etc/shadow',16,16,11,1,1),(47,14,'file * /bin/* | grep -i script',16,17,15,0,1),(48,14,'grep -c script /bin/*',16,17,16,0,0),(49,12,'/etc/passw',16,17,10,0,0),(50,12,'/etc/shadow',16,17,11,0,1),(51,17,'/config ',16,17,21,0,0),(52,17,'/etc  ',16,17,22,0,0),(53,17,'/boot',16,17,23,0,0),(54,17,'/etc/fstab',16,17,24,0,1),(55,13,'elenca tutti i file contenuti nella directory corrente',16,17,12,0,0),(56,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',16,17,13,0,0),(57,13,'elenca tutti i file nella directory corrente che contengono la parola fine',16,17,14,0,1),(58,16,'prty   ',16,17,19,0,0),(59,16,'nice     ',16,17,20,0,1),(60,15,'dpkg -configure a',16,17,17,0,0),(61,15,'apt-get -f install',16,17,18,0,1),(62,12,'/etc/passw',16,18,10,0,0),(63,12,'/etc/shadow',16,18,11,1,1),(64,15,'dpkg -configure a',16,18,17,0,0),(65,15,'apt-get -f install',16,18,18,1,1),(66,16,'prty   ',16,18,19,0,0),(67,16,'nice     ',16,18,20,1,1),(68,14,'file * /bin/* | grep -i script',16,18,15,1,1),(69,14,'grep -c script /bin/*',16,18,16,0,0),(70,13,'elenca tutti i file contenuti nella directory corrente',16,18,12,0,0),(71,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',16,18,13,0,0),(72,13,'elenca tutti i file nella directory corrente che contengono la parola fine',16,18,14,1,1),(73,17,'/config ',16,18,21,0,0),(74,17,'/etc  ',16,18,22,0,0),(75,17,'/boot',16,18,23,0,0),(76,17,'/etc/fstab',16,18,24,1,1),(77,13,'elenca tutti i file contenuti nella directory corrente',16,19,12,0,0),(78,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',16,19,13,0,0),(79,13,'elenca tutti i file nella directory corrente che contengono la parola fine',16,19,14,1,1),(80,14,'file * /bin/* | grep -i script',16,19,15,1,1),(81,14,'grep -c script /bin/*',16,19,16,0,0),(82,12,'/etc/passw',16,19,10,0,0),(83,12,'/etc/shadow',16,19,11,1,1),(84,16,'prty   ',16,19,19,0,0),(85,16,'nice     ',16,19,20,1,1),(86,15,'dpkg -configure a',16,19,17,0,0),(87,15,'apt-get -f install',16,19,18,1,1),(88,17,'/config ',16,19,21,0,0),(89,17,'/etc  ',16,19,22,0,0),(90,17,'/boot',16,19,23,0,0),(91,17,'/etc/fstab',16,19,24,1,1);
 /*!40000 ALTER TABLE `scheda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -156,7 +161,7 @@ CREATE TABLE `utente` (
   `login` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -165,7 +170,7 @@ CREATE TABLE `utente` (
 
 LOCK TABLES `utente` WRITE;
 /*!40000 ALTER TABLE `utente` DISABLE KEYS */;
-INSERT INTO `utente` VALUES (15,'admin','root');
+INSERT INTO `utente` VALUES (15,'admin','root'),(16,'mau','mu');
 /*!40000 ALTER TABLE `utente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -178,4 +183,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2012-01-04 13:45:05
+-- Dump completed on 2012-01-04 18:00:00

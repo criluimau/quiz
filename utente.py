@@ -80,4 +80,9 @@ class utente:
 		lista = ""
 		lista=self.db1.select("login, id","utente")
 		return lista
+	
+	def recuperaid_utente(self,user_name):
+		lista=self.db1.select("*", "utente WHERE login='"+user_name+"'")
+		id_utente   = lista[0][0]
+		return id_utente
 

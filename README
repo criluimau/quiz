@@ -1,4 +1,16 @@
+This project is being developed by students who are learning the language and the use of python glade, MySQL as well as github.
+For further information on the project see the presentation of the project, in italian language: quiz.odp.
+
+Import databases: 
+_ mysqladmin create quiz -u root -p
+_ mysql quiz -u root -p < db.sql
+
+
+
 Il presente progetto è in fase di sviluppo da parte di studenti che stanno apprendendo il linguaggio python e l'utilizzo di glade, Mysql nonchè di github.
 Per ulteriori approfondimenti sul progetto vedi la presentazione del progetto: quiz.odp.
 
-Importazione database: mysql quiz -u root -p < db.sql
+Importazione database:
+_ mysqladmin create quiz -u root -p
+_ mysql quiz -u root -p < db.sql
+

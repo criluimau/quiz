@@ -127,4 +127,3 @@ class DomaRisp:
 		RispFun.append(err)
 		RispFun.append(msg)			
 		return RispFun
-
