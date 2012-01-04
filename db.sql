@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.49, for debian-linux-gnu (i686)
+-- MySQL dump 10.13  Distrib 5.1.41, for debian-linux-gnu (i486)
 --
 -- Host: localhost    Database: quiz
 -- ------------------------------------------------------
--- Server version	5.1.49-1ubuntu8.1
+-- Server version	5.1.41-3ubuntu12.10
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,7 +29,7 @@ CREATE TABLE `domande` (
   `tipo_risposta` text COMMENT 'm = multipla; 0 = ordinamento',
   `difficolta` int(11) NOT NULL COMMENT 'valore 0 min - 10max',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,6 +38,7 @@ CREATE TABLE `domande` (
 
 LOCK TABLES `domande` WRITE;
 /*!40000 ALTER TABLE `domande` DISABLE KEYS */;
+INSERT INTO `domande` VALUES (12,'Dove si trova il file delle password?',7,'m',3),(13,'Cosa fa il comando \"grep -c fine *\"',7,'m',4),(14,'Quale Ã¨ il comando per cercare gli script nella directory bin?',7,'m',5),(15,'Quale Ã¨ il comando per installare tutte le dipendenze del software?',7,'m',6),(16,'quale Ã¨ il comando per impostare la prioritÃ  di un lavoro?',7,'m',6),(17,'in quale directory si trovano i file di configurazione?',7,'m',5);
 /*!40000 ALTER TABLE `domande` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,7 +53,7 @@ CREATE TABLE `materia` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `argomento` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,7 +62,7 @@ CREATE TABLE `materia` (
 
 LOCK TABLES `materia` WRITE;
 /*!40000 ALTER TABLE `materia` DISABLE KEYS */;
-INSERT INTO `materia` VALUES (4,'jsp'),(5,'php');
+INSERT INTO `materia` VALUES (7,'Linux'),(5,'php'),(8,'Python');
 /*!40000 ALTER TABLE `materia` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,10 +101,11 @@ DROP TABLE IF EXISTS `risposte`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `risposte` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_domanda` text NOT NULL,
+  `id_domanda` int(11) NOT NULL,
+  `testo` text NOT NULL,
   `valore` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,6 +114,7 @@ CREATE TABLE `risposte` (
 
 LOCK TABLES `risposte` WRITE;
 /*!40000 ALTER TABLE `risposte` DISABLE KEYS */;
+INSERT INTO `risposte` VALUES (10,12,'/etc/passw',0),(11,12,'/etc/shadow',1),(12,13,'elenca tutti i file contenuti nella directory corrente',0),(13,13,'elenca tutti i file della directory corrente che iniziano per la lettera c',0),(14,13,'elenca tutti i file nella directory corrente che contengono la parola fine',1),(15,14,'file * /bin/* | grep -i script',1),(16,14,'grep -c script /bin/*',0),(17,15,'dpkg -configure a',0),(18,15,'apt-get -f install',1),(19,16,'prty   ',0),(20,16,'nice     ',1),(21,17,'/config ',0),(22,17,'/etc  ',0),(23,17,'/boot',0),(24,17,'/etc/fstab',1);
 /*!40000 ALTER TABLE `risposte` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -153,7 +156,7 @@ CREATE TABLE `utente` (
   `login` text NOT NULL,
   `pass` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +165,7 @@ CREATE TABLE `utente` (
 
 LOCK TABLES `utente` WRITE;
 /*!40000 ALTER TABLE `utente` DISABLE KEYS */;
-INSERT INTO `utente` VALUES (7,'uuu','123456'),(6,'mau1','r'),(5,'mauri','ma'),(4,'nnn','123456'),(8,'nnn','123'),(9,'nnn','123'),(10,'ttt','123'),(11,'Admin','1'),(12,'n','n'),(13,'',''),(14,'luigi','asd');
+INSERT INTO `utente` VALUES (15,'admin','root');
 /*!40000 ALTER TABLE `utente` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -175,4 +178,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-12-15  9:09:44
+-- Dump completed on 2012-01-04 13:45:05

@@ -29,6 +29,30 @@ import Db, utente, DomaRisp
 # funzioni
 # *************************************
 
+def listarisposteid(iddomanda):
+	print "\n\nLISTA RISPOSTE PRESENTI NELLA DOMANDA CON ID: "+str(iddomanda)
+	lista=DR1.lista_risposte_xid(iddomanda)
+	risposteid = []
+	if len(lista) == 0:
+		print "nessuna risposta presente"
+	else:
+		for a in lista:
+			risposteid.append(a[0])
+			print a[1]+ " id: " +str(a[0])
+	return risposteid
+
+def listadomandeid(idmateria, materia):
+	print "\n\nLISTA DOMANDE PRESENTI PER MATERIA: "+materia
+	lista=DR1.lista_domande_xid(idmateria)
+	domandeid = []
+	if len(lista) == 0:
+		print "nessuna domanda presente"
+	else:
+		for a in lista:
+			domandeid.append(a[0])
+			print a[1]+ " id: " +str(a[0])
+	return domandeid
+
 def listamaterie():
 	print "\n\nLISTA MATERIE PRESENTI:"
 	lista=DR1.lista_materie()
@@ -41,16 +65,12 @@ def listamaterie():
 			print a[0]+ " id: " +str(a[1])
 	return materie
 
-def listamaterid():
-	print "\n\nLISTA MATERIE PRESENTI:"
+def caricamaterid():
 	lista=DR1.lista_materie()
 	materid = []
-	if len(lista) == 0:
-		print "nessuna materia presente"
-	else:
+	if len(lista) > 0:
 		for a in lista:
 			materid.append(a[1])
-			print a[0]+ " id: " +str(a[1])
 	return materid
 
 def listautenti():
@@ -59,7 +79,7 @@ def listautenti():
 	if len(lista) == 0:
 		print "nessun utente presente"
 	else:
-		cont=0
+		cont=1
 		for row in lista:
 			print str(cont) + " " +row[0]+ "      id:" +str(row[1]) 
 			cont=cont+1
@@ -125,7 +145,7 @@ while autenticato == False:
 	else:
 		#Registrazione nuovo utente
 		while autenticato == False:
-			# richiesta utete
+			# richiesta utente
 			user_name= raw_input("Registra il nome utente: ")
 			user	 = utente.utente(db1, user_name)
 			RispFun	 = user.nuovo_utente(user_name)
@@ -152,8 +172,7 @@ while autenticato == False:
 			msg         = RispFun[1]
 			print msg
 			autenticato = not(err)
-			
-				
+
  # Scelta amministratore
 if user_name.lower() == 'admin':
 	user_admin = True
@@ -315,7 +334,8 @@ while user_admin:
 		
 		while scelta3==1:
 			materie=listamaterie()
-			materid=listamaterid()
+			materid=caricamaterid()
+			print "Inserisci 0 per uscire"
 			risp = False
 			while risp == False:
 				try:
@@ -323,11 +343,14 @@ while user_admin:
 				except:
 					print "Inserisci un id della materia valido"
 					continue
+				if id_argomento == 0:
+					break
 				if id_argomento in materid:
 					risp = True
-					break
-				else:					
+				else:
 					print("L'id materia immesso è errato o non esistente")
+			if id_argomento == 0:
+				break
 			id =  materid.index(id_argomento)
 			print "ok, hai selezionato la materia", materie[id], "id:", id_argomento
 			testo_domanda = ""
@@ -339,20 +362,20 @@ while user_admin:
 				except:
 					continue
 			count = 0
-			risp = 'N'
+			risp = 'S'
 			verofalso = False
-			while risp == 'N' or not verofalso or count < 2:
+			while risp == 'S' or not verofalso or count < 2:
 				print "inserisci almeno 2 risposte di cui una vera"
 				risposta_domanda=""
 				valore=2
-				while len(risposta_domanda) < 10:
+				while len(risposta_domanda) < 5:
 					risposta_domanda= raw_input('inserisci la risposta alla domanda: '+testo_domanda+' ')
 				while valore !=0 and valore !=1:
 					try:
-						valore= input('La risposta inserita è vera o falsa? 1|0')
+						valore= input('La risposta inserita è vera o falsa? 1|0 ')
 					except:
 						continue
-				if valore == 0:
+				if valore == 1:
 					verofalso = True
 				count = count+1
 				# inserisce domanda
@@ -376,40 +399,93 @@ while user_admin:
 					continua()
 				if verofalso and count >= 2:
 					risp = rispsino("Vuoi continuare ad inserire risposte?")
-
 			risp = rispsino("Vuoi continuare ad inserire domande?")
 			if risp == "N":
 				break
 					
 		while scelta3==2:
-				select= db1.select("id,argomento" ,"materia")
-				materie = []
-				for a in select:
-					materie.append(a[0])
-					print str(a[0])+ " " +str(a[1])
-				materia = input("A quale id argomento corrisponde la domanda\e che vuoi cancellare? ")
-				if materia in materie:
-						select= db1.select("id,testo" ,"domande WHERE argomento_id="+str(materia))			
-						domande = []
-						for a in select:
-							domande.append(a[0])
-							print str(a[0])+ " " +str(a[1])
-						del_domanda = input('per favore inserisci l\'id della domanda da cancellare ')
-						if del_domanda in domande:
-							db1.delete("domande WHERE id='"+str(del_domanda)+"'")
-							print("la domanda, con id " +str(del_domanda)+ " è stata cancellata correttamente")
-							back = raw_input('Vuoi tornare al menu principale? s - n: ')
-							if back == "s" or back == "S":
-								scelta = 0
-							if back != "s" or back != "S":
-								scelta = 7
-						else:
-							print("il nome della materia che si è immesso è errato o non esistente")
-							riprova = raw_input('Vuoi riprovare? s/n')
-							if riprova == "s" or riprova == "S":
-								scelta = 7
-							if riprova != "s" or riprova != "S":
-								scelta = 0
+			materieid=caricamaterid()
+			materie=listamaterie()
+			print "Inserisci 0 per uscire"
+			# richiesta id materia
+			risp = False
+			while risp == False:
+				try:
+					idmateria = input("A quale id argomento corrisponde la domanda\e che vuoi cancellare? ")
+				except:
+					print "inserisce un ID argomento valido"
+					continue
+				if idmateria == 0:
+					break
+				if idmateria in materieid:
+					risp=True
+				else:
+					print "L'ID argomento inserito non esiste"
+			if idmateria == 0:
+					break
+			# richiesta id domanda
+			materia = materie[materieid.index(idmateria)]
+			domandeid=listadomandeid(idmateria, materia)
+			print "Inserisci 0 per uscire"
+			if len(domandeid) == 0:
+				print "Non ci sono domande per l'argomento scelto"
+				continue	# non ci sono domande, riprendo da capo
+			risp = False
+			while risp == False:
+				try:
+					iddomanda = input("A quale id domanda corrisponde la domanda che vuoi cancellare? ")
+				except:
+					print "inserisce un ID domanda valido"
+					continue
+				if iddomanda == 0:
+					break					
+				if iddomanda in domandeid:
+					risp=True
+				else:
+					print "L'ID domanda inserito non esiste"
+			if iddomanda == 0:
+				break					
+
+			# richiesta id risposta
+			uscita = 'N'
+			while uscita == 'N':
+				rispostaid=listarisposteid(iddomanda)
+				print "Inserisci 0 per uscire"
+				# cancella domanda in assenza di risposte
+				if len(rispostaid) == 0:
+					print "cancello domanda in assenza di risposte"
+					RispFun = DR1.cancella_domanda(iddomanda)
+					err     = RispFun[0]
+					msg     = RispFun[1]					
+					print msg
+					break				
+				risp = False
+				while risp == False:
+					try:
+						idrisposta = input("A quale id risposta corrisponde la risposta che vuoi cancellare? ")
+					except:
+						print "inserisce un ID risposta valido"
+						continue
+					if idrisposta == 0:
+						break
+					if idrisposta in rispostaid:
+						risp=True
+					else:
+						print "L'ID risposta inserito non esiste"
+				if idrisposta == 0:
+						break
+				# cancella risposta
+				RispFun = DR1.cancella_risposta(idrisposta)
+				err     = RispFun[0]
+				msg     = RispFun[1]				
+				if err==True:
+					print msg
+					continua()
+				uscita=rispsino("Vuoi continuare a cancellare risposte?")
+
+			risp = rispsino("Vuoi continuare a cancellare altre domande/risposte?")
+			if risp == "N":
+				break
 
 		if scelta3 == 8:
 			break

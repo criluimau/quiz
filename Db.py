@@ -23,8 +23,6 @@ class Db:
 			self.conn.close()
 			
 		def select(self,campo,s):
-			
-					
 			sql = "SELECT "+campo+" FROM "+s
 			#print sql
 			results=""
@@ -48,7 +46,7 @@ class Db:
 		
 		def insert(self,i):
 			sql = "INSERT INTO "+i
-			
+			#print sql
 			try:
 				self.cursor.execute(sql)
 				self.conn.commit()
@@ -64,7 +62,7 @@ class Db:
 		def delete(self,d):
 			
 			sql ="DELETE FROM "+d
-			
+			#print sql
 			try:
 				self.cursor.execute(sql)
 				self.conn.commit()

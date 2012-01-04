@@ -70,8 +70,9 @@ class DomaRisp:
 		return RispFun
 
 	def inserisci_domanda(self,testo_domanda,id_argomento,difficolta):
+		tiporisp='m' 	# risposta multipla
 		RispFun = []
-		err=self.db1.insert("domande (testo, argomento_id ,difficolta) VALUES('"+testo_domanda+"','"+str(id_argomento)+"','"+str(difficolta)+"')")
+		err=self.db1.insert("domande (testo, argomento_id, difficolta, tipo_risposta) VALUES('"+testo_domanda+"','"+str(id_argomento)+"','"+str(difficolta)+"','"+tiporisp+"')")
 		if not err:
 			msg = "Domanda "+testo_domanda+" inserita correttamente"
 		else:
@@ -81,7 +82,7 @@ class DomaRisp:
 		return RispFun
 		
 	def recuperaid_domanda(self,testo_domanda,id_argomento):
-		lista=self.db1.select("id", "domande WHERE testo='"+testo_domanda+"' AND id='"+str(id_argomento)+"'")
+		lista=self.db1.select("id", "domande WHERE testo='"+testo_domanda+"' AND argomento_id='"+str(id_argomento)+"'")
 		return lista
 		
 	def inserisci_risposta(self,id_domanda,risposta_domanda,valore):
@@ -94,3 +95,36 @@ class DomaRisp:
 		RispFun.append(err)
 		RispFun.append(msg)			
 		return RispFun
+
+	def lista_domande_xid(self, materiaid):
+		lista = ""
+		lista=self.db1.select("id,testo" ,"domande WHERE argomento_id="+str(materiaid))
+		return lista
+
+	def lista_risposte_xid(self, domandaid):
+		lista = ""
+		lista=self.db1.select("id,testo" ,"risposte WHERE id_domanda="+str(domandaid))
+		return lista	
+
+	def cancella_risposta(self,rispostaid):
+		RispFun = []
+		err=self.db1.delete("risposte WHERE id='"+str(rispostaid)+"'")
+		if not err:
+			msg = "Risposta "+str(rispostaid)+" cancellata correttamente"
+		else:
+			msg = "ERRORE: Risposta "+rispostaid+" NON cancellata"
+		RispFun.append(err)
+		RispFun.append(msg)			
+		return RispFun
+	
+	def cancella_domanda(self,domandaid):
+		RispFun = []
+		err=self.db1.delete("domande WHERE id='"+str(domandaid)+"'")
+		if not err:
+			msg = "Domanda "+str(domandaid)+" cancellata correttamente"
+		else:
+			msg = "ERRORE: Domanda "+Domandaid+" NON cancellata"
+		RispFun.append(err)
+		RispFun.append(msg)			
+		return RispFun
+
