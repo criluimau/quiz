@@ -29,6 +29,95 @@ import Db, utente, DomaRisp, Questionario
 # funzioni
 # *************************************
 
+def pgmstart():
+	global db1, DR1, Quest1
+	# Connessione a database MYsql
+	hostname = 'localhost'
+	db = 'quiz'
+	db_user = 'root'
+	db_passwd = 'red'
+	# Inizializzazione oggetto Database
+	db1 = Db.Db(hostname,db_user,db_passwd,db)
+	db1.connection_on()
+	# Inizializzazione oggetto Domande/risposte
+	DR1 = DomaRisp.DomaRisp(db1)
+	# Inizializzazione oggetto questionario
+	Quest1 = Questionario.Questionario(db1)
+
+
+def pgmend():
+	db1.connection_off()
+	sys.exit(0)
+
+def menu(num):
+	if num == 0:
+		print "\n=========================================="
+		print "         MENU' PRINCIPALE"
+		print "\nScegli un'operazione: "
+		print "1 - Gestione utenti"
+		print "2 - Gestione materie"
+		print "3 - Gestione domande"
+		print "4 - Gestione questionari"
+		print ""
+		print "9 - Fine"
+		print "=========================================="	
+		opzioni = (1,2,3,4,9)
+	elif num == 1:
+		print "\n=========================================="
+		print "         MENU' GESTIONE UTENTE"
+		print "\nScegli un'operazione: "
+		print "1 - Visualizza la lista degli utenti"
+		print "2 - Cancella utente"
+		print ""
+		print "8 - Ritorna al menù principale"
+		print "9 - Fine"
+		print "=========================================="
+		opzioni = (1,2,8,9)
+	elif num == 2:
+		print "\n=========================================="
+		print "         MENU' GESTIONE MATERIE"
+		print "\nScegli un'operazione: "
+		print "1 - Crea un nuova materia"
+		print "2 - Modifica materia"
+		print "3 - Cancella materia"
+		print ""
+		print "8 - Ritorna al menù principale"
+		print "9 - Fine"
+		print "=========================================="
+		opzioni = (1,2,3,8,9)
+	elif num == 3:
+		print "\n=========================================="
+		print "         MENU' GESTIONE DOMANDE"
+		print "\nScegli un'operazione: "
+		print "1 - Crea domande"
+		print "2 - Cancella domande e risposte"
+		print ""
+		print "8 - Ritorna al menù principale"
+		print "9 - Fine"
+		print "=========================================="
+		opzioni = (1,2,8,9)
+	elif num == 4:
+		print "\n=========================================="
+		print "         MENU' GESTIONE QUESTIONARI"
+		print "\nScegli un'operazione: "
+		print "1 - vai a menù utente"
+		print ""
+		print "8 - Ritorna al menù principale"
+		print "9 - Fine"
+		print "=========================================="
+		opzioni = (1,8,9)
+	else:
+		print "errore pgm"
+		continua()
+		pgmend()
+
+	scelta = sceltamenu(opzioni)		
+	# fine e chiusura programma
+	if scelta == 9:
+		pgmend()
+
+	return scelta
+	
 def risultato(id_quest):
 	record   = Quest1.dati_quest(id_quest)
 
@@ -114,7 +203,7 @@ def listamaterie():
 	else:
 		for a in lista:
 			materie.append(a[0])
-			print a[0]+ " id: " +str(a[1])
+			print a[0]+ "\tid: " +str(a[1])
 	return materie
 
 def caricamaterid():
@@ -167,18 +256,7 @@ def continua():
 # Programma principale
 # *************************************
 
-# Connessione a database MYsql
-hostname = 'localhost'
-db = 'quiz'
-db_user = 'root'
-db_passwd = 'red'
-# Inizializzazione oggetto Database
-db1 = Db.Db(hostname,db_user,db_passwd,db)
-db1.connection_on()
-# Inizializzazione oggetto Domande/risposte
-DR1 = DomaRisp.DomaRisp(db1)
-# Inizializzazione oggetto questionario
-Quest1 = Questionario.Questionario(db1)
+pgmstart()
 
 # login
 autenticato = False
@@ -244,40 +322,14 @@ else:
 # ===============================
 
 while user_admin:
-	menuutente = False
-	print "\n=========================================="
-	print "         MENU' PRINCIPALE"
- 	print "\nScegli un'operazione: "
-	print "1 - Gestione utenti"
-	print "2 - Gestione materie"
-	print "3 - Gestione domande"
-	print "4 - Gestione questionari"
-	print ""
-	print "9 - Fine"
-	print "=========================================="	
-	opzioni = (1,2,3,4,9)
-	scelta = sceltamenu(opzioni)
-	if scelta == 9:
-		db1.connection_off()
-		sys.exit(0)
-
+	# menu 0 .......................................
+	scelta = menu(0)
+	# menu 1 .......................................
 	while scelta == 1:	
-		print "\n=========================================="
-		print "         MENU' GESTIONE UTENTE"
-		print "\nScegli un'operazione: "
-		print "1 - Visualizza la lista degli utenti"
-		print "2 - Cancella utente"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,2,8,9)
-		scelta1 = sceltamenu(opzioni)
-		
+		scelta1 = menu(1)
 		if scelta1==1:
 			listautenti()
 			continua()
-			
 		while scelta1==2:
 			lista = listautenti()
 			risp = False
@@ -300,24 +352,11 @@ while user_admin:
 			
 		if scelta1 == 8:
 			break
-		if scelta1 == 9:
-			db1.connection_off()
-			sys.exit(0)
-
+			
+	# menu 2 .......................................
 	while scelta == 2:	
-		print "\n=========================================="
-		print "         MENU' GESTIONE MATERIE"
-		print "\nScegli un'operazione: "
-		print "1 - Crea un nuova materia"
-		print "2 - Modifica materia"
-		print "3 - Cancella materia"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,2,3,8,9)
-		scelta2 = sceltamenu(opzioni)
-
+		scelta2 = menu(2)
+	
 		while scelta2==1:
 			materie=listamaterie()
 			nome_materia= raw_input("Inserisci una Materia: ")
@@ -369,23 +408,11 @@ while user_admin:
 		 
 		if scelta2 == 8:
 			break
-		if scelta2 == 9:
-			db1.connection_off()
-			sys.exit(0)
 		
+	# menu 3 .......................................
 	while scelta == 3:	
-		print "\n=========================================="
-		print "         MENU' GESTIONE DOMANDE"
-		print "\nScegli un'operazione: "
-		print "1 - Crea domande"
-		print "2 - Cancella domande e risposte"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,2,8,9)
-		scelta3 = sceltamenu(opzioni)
-		
+		scelta3 = menu(3)
+
 		while scelta3==1:
 			materie=listamaterie()
 			materid=caricamaterid()
@@ -543,31 +570,16 @@ while user_admin:
 
 		if scelta3 == 8:
 			break
-		if scelta3 == 9:
-			db1.connection_off()
-			sys.exit(0)
 
-	while scelta == 4:	
-		print "\n=========================================="
-		print "         MENU' GESTIONE QUESTIONARI"
-		print "\nScegli un'operazione: "
-		print "1 - vai a menù utente"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,8,9)
-		scelta4 = sceltamenu(opzioni)
+	# menu 4 .......................................
+	while scelta == 4:
+		scelta4 = menu(4)
 		
 		if scelta4 == 1:
-			menuutente = True
 			break
 		if scelta4 == 8:
 			break
-		if scelta4 == 9:
-			db1.connection_off()
-			sys.exit(0)
-	if menuutente == True:
+	if scelta4 == 1:
 		break		# passo a menù utente
 
 # ===============================

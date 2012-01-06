@@ -26,7 +26,7 @@ class login:
 		"on_ButtonAccedi_clicked" : self.accedi,
 		"on_ButtonNuovo_clicked" : self.insuser,
 		"on_windowMain_destroy" : self.quit,
-		"on_ButtonAccedi1_clicked" : self.quit,
+		"on_ButtonAccedi1_clicked" : self.insuser,
 		"on_windowUser_destroy" : self.accedi,
 		}
 		self.wTree.signal_autoconnect( dic )		
@@ -36,9 +36,10 @@ class login:
 		if self.window != s:
 			self.window= s			
 			self.wTree 	= gtk.glade.XML( "login.glade", self.window )
+		print self.window
 			
 	def accedi(self, widget):
-		self.__cambio_window("windowMain")			
+		self.__cambio_window("windowMain")
 		self.user_name   = self.wTree.get_widget("user_name").get_text()
 		self.user_passwd = self.wTree.get_widget("user_passwd").get_text()
 		if self.user_name == "" or self.user_passwd == "":
@@ -46,12 +47,15 @@ class login:
 			self.wTree.get_widget("messages").set_text("inserire utente e password")
 		else:
 			user	 	= utente.utente(self.db, self.user_name)
-			autenticato	= user.controlla_password(self.user_passwd)
-			if autenticato == False:
+			RispFun 	= user.controlla_password(self.user_passwd)
+			autenticato = RispFun[0]
+			msg         = RispFun[1]
+			if not autenticato:
 				self.wTree.get_widget("hboxWarning").show()
 				self.wTree.get_widget("messages").set_text("utente o password errata")
 			else:
-				self.wTree.get_widget("hboxWarning").hide()
+				#self.wTree.get_widget("hboxWarning").hide()
+				self.wTree.get_widget("hboxWarning").show()
 				self.wTree.get_widget("messages").set_text("utente connesso")		
 
 	def insuser(self, widget):
@@ -59,14 +63,17 @@ class login:
 		self.user_name   = self.wTree.get_widget("user_name1").get_text()
 		self.user_passwd = self.wTree.get_widget("user_passwd1").get_text()
 		user	 	= utente.utente(self.db, self.user_name)
-		autenticato	= user.controlla_password(self.user_passwd)
-		print autenticato, self.user_name, self.user_passwd
-		if autenticato == False:
+		RispFun		= user.controlla_password(self.user_passwd)
+		autenticato = RispFun[0]
+		msg         = RispFun[1]
+		if not autenticato:
 			self.wTree.get_widget("hboxWarning1").show()
-			self.wTree.get_widget("messages1").set_text("ins.utente da fare")
+			self.wTree.get_widget("messages1").set_text("NO-ins.utente da fare")
 		else:
 			self.wTree.get_widget("hboxWarning1").show()
-			self.wTree.get_widget("messages1").set_text("ins.utente da fare")
+			self.wTree.get_widget("messages1").set_text("SI-ins.utente da fare")
+
+	
 
 	def quit(self, widget):
 		sys.exit(0)
