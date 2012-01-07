@@ -1,10 +1,10 @@
 #!/usr/bin/python
 #! -*- coding: utf-8 -*-
 
+# programma QUIZ con interfaccia terminale
+
 import sys, string, datetime, time
 import Db, utente, DomaRisp, Questionario
-# interfaccie grafiche
-import login
 
 # *************************************
 # funzioni
@@ -236,27 +236,61 @@ def continua():
 # *************************************
 # Programma principale
 # *************************************
-# inizio
+
 pgmstart()
 
 # login
-autenticato = login.login(db1)
-RispFun 	= autenticato.main()
-FinePgm 	= RispFun[0]
-user_name  	= RispFun[1]
+autenticato = False
+while autenticato == False:
+	
+	#richiesta iniziale
+	user_new=rispsino("Sei un utente già registrato") 
+	
+	if user_new=="S":
+	#login utente già registrato
+		user_name   = raw_input("Scrivi il tuo nome utente: ")
+		user_passwd = raw_input("Scrivi password: ")
+		user	 	= utente.utente(db1, user_name)
+		RispFun    	= user.controlla_password(user_passwd)
+		autenticato = RispFun[0]
+		msg         = RispFun[1]
+		print msg
+	else:
+		#Registrazione nuovo utente
+		while autenticato == False:
+			# richiesta utente
+			user_name= raw_input("Registra il nome utente: ")
+			user	 = utente.utente(db1, user_name)
+			RispFun	 = user.nuovo_utente(user_name)
+			risp	 = RispFun[0]
+			msg      = RispFun[1]
+			if risp == False:
+				print msg
+				continue		# ritorno al while
+						
+			# richiesta password
+			user_passwd  =""
+			user_passwd1 =""
+			while user_passwd != user_passwd1 or len(user_passwd) == 0:
+				user_passwd = raw_input("Registra la password: ")
+				user_passwd1= raw_input("Ripeti la password  : ")
+				if user_passwd != user_passwd1:
+					print 'Le due password sono diverse'
+				if len(user_passwd) == 0:
+					print 'Inserire una password valida'
+			
+			# registrazione utente
+			RispFun     = user.inserisci_utente(user_passwd)
+			err         = RispFun[0]
+			msg         = RispFun[1]
+			print msg
+			autenticato = not(err)
 
-if FinePgm ==True:
-	pgmend()
-
-# Scelta amministratore
+ # Scelta amministratore
 if user_name.lower() == 'admin':
 	user_admin = True
 else:
 	user_admin = False
-
-# *******************************************
-# PASSAGGIO DA INTERFACCIA TESTUALE A GRAFICA
-# *********************************************
 
 # messaggio di benvenuto
 if user_admin:

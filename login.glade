@@ -1,306 +1,233 @@
 <?xml version="1.0"?>
-<glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+<interface>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
-  <widget class="GtkWindow" id="windowMain">
+  <object class="GtkWindow" id="WindowLogin">
     <property name="visible">True</property>
-    <property name="title" translatable="yes">Autenticazione utente</property>
-    <signal name="destroy" handler="on_windowMain_destroy"/>
+    <property name="title" translatable="yes">Quiz - autenticazione utente</property>
+    <property name="window_position">center-always</property>
+    <signal name="destroy" handler="on_WindowLogin_destroy"/>
     <child>
-      <widget class="GtkVBox" id="vbox1">
+      <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkHBox" id="hbox2">
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
             <property name="homogeneous">True</property>
             <child>
-              <widget class="GtkLabel" id="label1">
+              <object class="GtkLabel" id="lable1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Nome utente</property>
-              </widget>
+                <property name="label" translatable="yes">Nome Utente</property>
+              </object>
               <packing>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="user_name">
+              <object class="GtkEntry" id="UserName">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
-              </widget>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox3">
+          <object class="GtkHBox" id="hbox2">
             <property name="visible">True</property>
             <property name="homogeneous">True</property>
             <child>
-              <widget class="GtkLabel" id="label2">
+              <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">password</property>
-              </widget>
+                <property name="label" translatable="yes">Password</property>
+              </object>
               <packing>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="user_passwd">
+              <object class="GtkEntry" id="Password">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
-              </widget>
+                <property name="invisible_char_set">True</property>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">1</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox4">
-            <property name="visible">True</property>
-            <child>
-              <widget class="GtkHBox" id="hboxWarning">
-                <child>
-                  <widget class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="stock">gtk-dialog-warning</property>
-                  </widget>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="messages">
-                    <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
-                  </widget>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkHBox" id="hbox6">
-                <property name="visible">True</property>
-                <property name="homogeneous">True</property>
-                <child>
-                  <widget class="GtkButton" id="ButtonNuovo">
-                    <property name="label">gtk-new</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_ButtonNuovo_clicked"/>
-                  </widget>
-                  <packing>
-                    <property name="pack_type">end</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkButton" id="ButtonAccedi">
-                    <property name="label">gtk-ok</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_ButtonAccedi_clicked"/>
-                  </widget>
-                  <packing>
-                    <property name="pack_type">end</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="GtkWindow" id="windowUser">
-    <property name="visible">True</property>
-    <signal name="destroy" handler="on_windowUser_destroy"/>
-    <child>
-      <widget class="GtkVBox" id="vbox2">
-        <property name="visible">True</property>
-        <child>
-          <widget class="GtkHBox" id="hbox1">
-            <property name="visible">True</property>
+          <object class="GtkHBox" id="hbox3">
             <property name="homogeneous">True</property>
             <child>
-              <widget class="GtkLabel" id="label3">
+              <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Nome utente</property>
-              </widget>
+                <property name="label" translatable="yes">Reinserisci la password</property>
+              </object>
               <packing>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkEntry" id="user_name1">
+              <object class="GtkEntry" id="PasswordNew">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="invisible_char">&#x25CF;</property>
-              </widget>
+                <property name="invisible_char_set">True</property>
+              </object>
               <packing>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkHBox" id="hbox5">
-            <property name="visible">True</property>
-            <property name="homogeneous">True</property>
-            <child>
-              <widget class="GtkLabel" id="label4">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">password</property>
-              </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkEntry" id="user_passwd1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
-          <packing>
-            <property name="expand">False</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkHBox" id="hbox7">
-            <property name="visible">True</property>
-            <property name="homogeneous">True</property>
-            <child>
-              <widget class="GtkLabel" id="label5">
-                <property name="visible">True</property>
-                <property name="extension_events">cursor</property>
-                <property name="label" translatable="yes">Ripeti la password
-</property>
-              </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkEntry" id="user_passwd2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">&#x25CF;</property>
-              </widget>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">2</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox8">
+          <object class="GtkHBox" id="hbox4">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkHBox" id="hboxWarning1">
-                <child>
-                  <widget class="GtkImage" id="image2">
-                    <property name="visible">True</property>
-                    <property name="stock">gtk-dialog-warning</property>
-                  </widget>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="messages1">
-                    <property name="visible">True</property>
-                    <property name="sensitive">False</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
-                  </widget>
-                  <packing>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-              </widget>
-              <packing>
-                <property name="position">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
-              <widget class="GtkHBox" id="hbox9">
+              <object class="GtkHBox" id="hboxButNew">
                 <property name="visible">True</property>
                 <property name="homogeneous">True</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkHBox" id="hbox5">
+                    <property name="homogeneous">True</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="ButtonNuovo">
+                        <property name="label">gtk-new</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                        <signal name="clicked" handler="on_ButtonNuovo_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="pack_type">end</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkHBox" id="hboxButton">
+                <property name="visible">True</property>
+                <property name="homogeneous">True</property>
                 <child>
-                  <widget class="GtkButton" id="ButtonAccedi1">
+                  <object class="GtkButton" id="ButtonConferma">
                     <property name="label">gtk-ok</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_ButtonAccedi1_clicked"/>
-                  </widget>
+                    <signal name="clicked" handler="on_ButtonConferma_clicked"/>
+                  </object>
                   <packing>
-                    <property name="pack_type">end</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
-              </widget>
+                <child>
+                  <object class="GtkButton" id="ButtonEsci">
+                    <property name="label">gtk-quit</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="use_stock">True</property>
+                    <signal name="clicked" handler="on_ButtonEsci_clicked"/>
+                  </object>
+                  <packing>
+                    <property name="pack_type">end</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
-          </widget>
+          </object>
           <packing>
             <property name="expand">False</property>
             <property name="position">3</property>
           </packing>
         </child>
-      </widget>
+        <child>
+          <object class="GtkVBox" id="vbox2">
+            <property name="visible">True</property>
+            <child>
+              <object class="GtkHBox" id="hboxWarning">
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-dialog-warning</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEntry" id="MsgWarning">
+                    <property name="visible">True</property>
+                    <property name="sensitive">False</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

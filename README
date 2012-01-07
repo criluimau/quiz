@@ -5,6 +5,9 @@ Import databases:
 _ mysqladmin create quiz -u root -p
 _ mysql quiz -u root -p < db.sql
 
+Program:
+QuizTer:	Main Program with terminal interface
+Quiz		Main Program with graphical interface (gtk)
 
 
 Il presente progetto è in fase di sviluppo da parte di studenti che stanno apprendendo il linguaggio python e l'utilizzo di glade, Mysql nonchè di github.
@@ -13,4 +16,9 @@ Per ulteriori approfondimenti sul progetto vedi la presentazione del progetto: q
 Importazione database:
 _ mysqladmin create quiz -u root -p
 _ mysql quiz -u root -p < db.sql
+
+Programmi:
+QuizTer:	Programma principale con interfaccia terminale
+Quiz		Programma principale con interfaccia grafica
+
 
