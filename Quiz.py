@@ -4,7 +4,7 @@
 import sys, string, datetime, time
 import Db, utente, DomaRisp, Questionario
 # interfaccie grafiche
-import login
+import login, quizadmin
 
 # *************************************
 # funzioni
@@ -247,6 +247,7 @@ user_name  	= RispFun[1]
 
 if FinePgm ==True:
 	pgmend()
+user	 	= utente.utente(db1, user_name)
 
 # Scelta amministratore
 if user_name.lower() == 'admin':
@@ -267,267 +268,252 @@ else:
 # ===============================
 # menù iniziale amministratore
 # ===============================
-
 while user_admin:
-	# menu 0 .......................................
-	scelta = menu(0)
+	# menù grafico
+	MenuAdmin= quizadmin.quizadmin()
+	RispFun  = MenuAdmin.main()
+	finepgm  = RispFun[0]
+	scelta   = RispFun[1]
+	opzione  = RispFun[2]
+	
+	# fine e chiusura programma
+	print scelta, opzione
+	if finepgm:
+		pgmend()
+	
 	# menu 1 .......................................
-	while scelta == 1:	
-		scelta1 = menu(1)
-		if scelta1==1:
-			listautenti()
-			continua()
-		while scelta1==2:
-			lista = listautenti()
-			risp = False
-			while risp == False:
-				del_user = raw_input('per favore inserisci il nome utente che si desidera cancellare: ')
-				for a1 in lista:
-					if del_user == a1[0]:
-						risp = True
-						break					
-				if risp == False:
-					print("il nome utente che si è immesso è errato o non esistente")
-			RispFun  = user.cancella_utente(del_user)
-			err      = RispFun[0]
-			msg      = RispFun[1]
-			print msg
+	if scelta == 1 and opzione == 1:
+		listautenti()
+		continua()
+	while scelta == 1 and opzione ==2:
+		lista = listautenti()
+		risp = False
+		while risp == False:
+			del_user = raw_input('per favore inserisci il nome utente che si desidera cancellare: ')
+			for a1 in lista:
+				if del_user == a1[0]:
+					risp = True
+					break					
+			if risp == False:
+				print("il nome utente che si è immesso è errato o non esistente")
+		RispFun  = user.cancella_utente(del_user)
+		err      = RispFun[0]
+		msg      = RispFun[1]
+		print msg
 
-			risp = rispsino("Vuoi continuare?")
-			if risp == 'N':
-				break
-			
-		if scelta1 == 8:
+		risp = rispsino("Vuoi continuare?")
+		if risp == 'N':
 			break
 			
 	# menu 2 .......................................
-	while scelta == 2:	
-		scelta2 = menu(2)
-	
-		while scelta2==1:
-			materie=listamaterie()
-			nome_materia= raw_input("Inserisci una Materia: ")
-			if nome_materia in materie:
-				print "errore, materia già presente"
-			else:
-				RispFun     = DR1.inserisci_materia(nome_materia)
-				err         = RispFun[0]
-				msg         = RispFun[1]
-				print msg
+	while scelta == 2 and opzione == 1:
+		materie=listamaterie()
+		nome_materia= raw_input("Inserisci una Materia: ")
+		if nome_materia in materie:
+			print "errore, materia già presente"
+		else:
+			RispFun     = DR1.inserisci_materia(nome_materia)
+			err         = RispFun[0]
+			msg         = RispFun[1]
+			print msg
 
-			risp = user_new=rispsino("Vuoi continuare?") 
-			if risp == "N":
-				break
-								
-		while scelta2==2:
-			materie=listamaterie()
-			nome_materia=raw_input('Inserisci la materia da modificare: ')
-			if nome_materia in materie:
-				nuovo_nome=raw_input("Inserisci il nuovo nome: ")
-				if nuovo_nome not in materie and len(nuovo_nome) != 0:
-					RispFun     = DR1.modifica_materia(nome_materia, nuovo_nome)
-					err         = RispFun[0]
-					msg         = RispFun[1]
-					print msg
-				else:
-					print "Il nome della nuova materia esiste già o non è stata immessa"				
-			else:
-				print "Il nome della materia da modificare è inesistente o è già stato modificato in precedenza, per favore controlla nuovamente"
-				
-			risp = user_new=rispsino("Vuoi continuare?") 
-			if risp == "N":
-				break
-						
-		while scelta2==3:
-			materie=listamaterie()
-			del_materia = raw_input('Inserisci il nome della materia che si desidera cancellare: ')
-			if del_materia in materie:
-				RispFun     = DR1.cancella_materia(del_materia)
+		risp = user_new=rispsino("Vuoi continuare?") 
+		if risp == "N":
+			break
+							
+	while scelta == 2 and opzione == 2:
+		materie=listamaterie()
+		nome_materia=raw_input('Inserisci la materia da modificare: ')
+		if nome_materia in materie:
+			nuovo_nome=raw_input("Inserisci il nuovo nome: ")
+			if nuovo_nome not in materie and len(nuovo_nome) != 0:
+				RispFun     = DR1.modifica_materia(nome_materia, nuovo_nome)
 				err         = RispFun[0]
 				msg         = RispFun[1]
 				print msg
 			else:
-				print("il nome della materia che si è immesso è errato o non esistente")
+				print "Il nome della nuova materia esiste già o non è stata immessa"				
+		else:
+			print "Il nome della materia da modificare è inesistente o è già stato modificato in precedenza, per favore controlla nuovamente"
+			
+		risp = user_new=rispsino("Vuoi continuare?") 
+		if risp == "N":
+			break
+					
+	while scelta == 2 and opzione == 3:
+		materie=listamaterie()
+		del_materia = raw_input('Inserisci il nome della materia che si desidera cancellare: ')
+		if del_materia in materie:
+			RispFun     = DR1.cancella_materia(del_materia)
+			err         = RispFun[0]
+			msg         = RispFun[1]
+			print msg
+		else:
+			print("il nome della materia che si è immesso è errato o non esistente")
 
-			risp = user_new=rispsino("Vuoi continuare?") 
-			if risp == "N":
-				break
-		 
-		if scelta2 == 8:
+		risp = user_new=rispsino("Vuoi continuare?") 
+		if risp == "N":
 			break
 		
 	# menu 3 .......................................
-	while scelta == 3:	
-		scelta3 = menu(3)
-
-		while scelta3==1:
-			materie=listamaterie()
-			materid=caricamaterid()
-			print "Inserisci 0 per uscire"
-			risp = False
-			while risp == False:
-				try:
-					id_argomento= input("Inserisci id della materia dove vuoi aggiungere la domanda ")			
-				except:
-					print "Inserisci un id della materia valido"
-					continue
-				if id_argomento == 0:
-					break
-				if id_argomento in materid:
-					risp = True
-				else:
-					print("L'id materia immesso è errato o non esistente")
+	while scelta == 3 and opzione == 1:
+		materie=listamaterie()
+		materid=caricamaterid()
+		print "Inserisci 0 per uscire"
+		risp = False
+		while risp == False:
+			try:
+				id_argomento= input("Inserisci id della materia dove vuoi aggiungere la domanda ")			
+			except:
+				print "Inserisci un id della materia valido"
+				continue
 			if id_argomento == 0:
 				break
-			id =  materid.index(id_argomento)
-			print "ok, hai selezionato la materia", materie[id], "id:", id_argomento
-			testo_domanda = ""
-			difficolta = 0
-			while len(testo_domanda) < 10 or difficolta not in range(1,10):
-				testo_domanda = raw_input("Inserisci adesso il testo della domanda ")
+			if id_argomento in materid:
+				risp = True
+			else:
+				print("L'id materia immesso è errato o non esistente")
+		if id_argomento == 0:
+			break
+		id =  materid.index(id_argomento)
+		print "ok, hai selezionato la materia", materie[id], "id:", id_argomento
+		testo_domanda = ""
+		difficolta = 0
+		while len(testo_domanda) < 10 or difficolta not in range(1,10):
+			testo_domanda = raw_input("Inserisci adesso il testo della domanda ")
+			try:
+				difficolta= input('per favore inserisci la difficolta della domanda in una scala da 1 a 10 ')
+			except:
+				continue
+		count = 0
+		risp = 'S'
+		verofalso = False
+		while risp == 'S' or not verofalso or count < 2:
+			print "inserisci almeno 2 risposte di cui una vera"
+			risposta_domanda=""
+			valore=2
+			while len(risposta_domanda) < 5:
+				risposta_domanda= raw_input('inserisci la risposta alla domanda: '+testo_domanda+' ')
+			while valore !=0 and valore !=1:
 				try:
-					difficolta= input('per favore inserisci la difficolta della domanda in una scala da 1 a 10 ')
+					valore= input('La risposta inserita è vera o falsa? 1|0 ')
 				except:
 					continue
-			count = 0
-			risp = 'S'
-			verofalso = False
-			while risp == 'S' or not verofalso or count < 2:
-				print "inserisci almeno 2 risposte di cui una vera"
-				risposta_domanda=""
-				valore=2
-				while len(risposta_domanda) < 5:
-					risposta_domanda= raw_input('inserisci la risposta alla domanda: '+testo_domanda+' ')
-				while valore !=0 and valore !=1:
-					try:
-						valore= input('La risposta inserita è vera o falsa? 1|0 ')
-					except:
-						continue
-				if valore == 1:
-					verofalso = True
-				count = count+1
-				# inserisce domanda
-				if count == 1:
-					RispFun = DR1.inserisci_domanda(testo_domanda,id_argomento,difficolta)
-					err     = RispFun[0]
-					msg     = RispFun[1]
-				if count == 1 and err==True:
-					print msg
-					continua()
-					break
-				# recupera id domanda
-				lista = DR1.recuperaid_domanda(testo_domanda,id_argomento)
-				id_domanda = lista[0][0]
-				# inserisci risposta
-				RispFun = DR1.inserisci_risposta(id_domanda,risposta_domanda,valore)
+			if valore == 1:
+				verofalso = True
+			count = count+1
+			# inserisce domanda
+			if count == 1:
+				RispFun = DR1.inserisci_domanda(testo_domanda,id_argomento,difficolta)
 				err     = RispFun[0]
-				msg     = RispFun[1]					
-				if err==True:
-					print msg
-					continua()
-				if verofalso and count >= 2:
-					risp = rispsino("Vuoi continuare ad inserire risposte?")
-			risp = rispsino("Vuoi continuare ad inserire domande?")
-			if risp == "N":
+				msg     = RispFun[1]
+			if count == 1 and err==True:
+				print msg
+				continua()
 				break
-					
-		while scelta3==2:
-			materieid=caricamaterid()
-			materie=listamaterie()
-			print "Inserisci 0 per uscire"
-			# richiesta id materia
-			risp = False
-			while risp == False:
-				try:
-					id_materia = input("A quale id argomento corrisponde la domanda\e che vuoi cancellare? ")
-				except:
-					print "inserisce un ID argomento valido"
-					continue
-				if id_materia == 0:
-					break
-				if id_materia in materieid:
-					risp=True
-				else:
-					print "L'ID argomento inserito non esiste"
+			# recupera id domanda
+			lista = DR1.recuperaid_domanda(testo_domanda,id_argomento)
+			id_domanda = lista[0][0]
+			# inserisci risposta
+			RispFun = DR1.inserisci_risposta(id_domanda,risposta_domanda,valore)
+			err     = RispFun[0]
+			msg     = RispFun[1]					
+			if err==True:
+				print msg
+				continua()
+			if verofalso and count >= 2:
+				risp = rispsino("Vuoi continuare ad inserire risposte?")
+		risp = rispsino("Vuoi continuare ad inserire domande?")
+		if risp == "N":
+			break
+				
+	while scelta == 3 and opzione == 2:
+		materieid=caricamaterid()
+		materie=listamaterie()
+		print "Inserisci 0 per uscire"
+		# richiesta id materia
+		risp = False
+		while risp == False:
+			try:
+				id_materia = input("A quale id argomento corrisponde la domanda\e che vuoi cancellare? ")
+			except:
+				print "inserisce un ID argomento valido"
+				continue
 			if id_materia == 0:
-					break
-			# richiesta id domanda
-			materia = materie[materieid.index(id_materia)]
-			domandeid=listadomandeid(id_materia, materia)
-			print "Inserisci 0 per uscire"
-			if len(domandeid) == 0:
-				print "Non ci sono domande per l'argomento scelto"
-				continue	# non ci sono domande, riprendo da capo
-			risp = False
-			while risp == False:
-				try:
-					id_domanda = input("A quale id domanda corrisponde la domanda che vuoi cancellare? ")
-				except:
-					print "inserisce un ID domanda valido"
-					continue
-				if id_domanda == 0:
-					break					
-				if id_domanda in domandeid:
-					risp=True
-				else:
-					print "L'ID domanda inserito non esiste"
+				break
+			if id_materia in materieid:
+				risp=True
+			else:
+				print "L'ID argomento inserito non esiste"
+		if id_materia == 0:
+				break
+		# richiesta id domanda
+		materia = materie[materieid.index(id_materia)]
+		domandeid=listadomandeid(id_materia, materia)
+		print "Inserisci 0 per uscire"
+		if len(domandeid) == 0:
+			print "Non ci sono domande per l'argomento scelto"
+			continue	# non ci sono domande, riprendo da capo
+		risp = False
+		while risp == False:
+			try:
+				id_domanda = input("A quale id domanda corrisponde la domanda che vuoi cancellare? ")
+			except:
+				print "inserisce un ID domanda valido"
+				continue
 			if id_domanda == 0:
 				break					
+			if id_domanda in domandeid:
+				risp=True
+			else:
+				print "L'ID domanda inserito non esiste"
+		if id_domanda == 0:
+			break					
 
-			# richiesta id risposta
-			uscita = 'N'
-			while uscita == 'N':
-				rispostaid=listarisposteid(iddomanda)
-				print "Inserisci 0 per uscire"
-				# cancella domanda in assenza di risposte
-				if len(rispostaid) == 0:
-					print "cancello domanda in assenza di risposte"
-					RispFun = DR1.cancella_domanda(id_domanda)
-					err     = RispFun[0]
-					msg     = RispFun[1]					
-					print msg
-					break				
-				risp = False
-				while risp == False:
-					try:
-						id_risposta = input("A quale id risposta corrisponde la risposta che vuoi cancellare? ")
-					except:
-						print "inserisce un ID risposta valido"
-						continue
-					if id_risposta == 0:
-						break
-					if id_risposta in rispostaid:
-						risp=True
-					else:
-						print "L'ID risposta inserito non esiste"
-				if id_risposta == 0:
-						break
-				# cancella risposta
-				RispFun = DR1.cancella_risposta(id_risposta)
+		# richiesta id risposta
+		uscita = 'N'
+		while uscita == 'N':
+			rispostaid=listarisposteid(iddomanda)
+			print "Inserisci 0 per uscire"
+			# cancella domanda in assenza di risposte
+			if len(rispostaid) == 0:
+				print "cancello domanda in assenza di risposte"
+				RispFun = DR1.cancella_domanda(id_domanda)
 				err     = RispFun[0]
-				msg     = RispFun[1]				
-				if err==True:
-					print msg
-					continua()
-				uscita=rispsino("Vuoi continuare a cancellare risposte?")
+				msg     = RispFun[1]					
+				print msg
+				break				
+			risp = False
+			while risp == False:
+				try:
+					id_risposta = input("A quale id risposta corrisponde la risposta che vuoi cancellare? ")
+				except:
+					print "inserisce un ID risposta valido"
+					continue
+				if id_risposta == 0:
+					break
+				if id_risposta in rispostaid:
+					risp=True
+				else:
+					print "L'ID risposta inserito non esiste"
+			if id_risposta == 0:
+					break
+			# cancella risposta
+			RispFun = DR1.cancella_risposta(id_risposta)
+			err     = RispFun[0]
+			msg     = RispFun[1]				
+			if err==True:
+				print msg
+				continua()
+			uscita=rispsino("Vuoi continuare a cancellare risposte?")
 
-			risp = rispsino("Vuoi continuare a cancellare altre domande/risposte?")
-			if risp == "N":
-				break
-
-		if scelta3 == 8:
+		risp = rispsino("Vuoi continuare a cancellare altre domande/risposte?")
+		if risp == "N":
 			break
 
 	# menu 4 .......................................
-	while scelta == 4:
-		scelta4 = menu(4)
-		
-		if scelta4 == 1:
-			break
-		if scelta4 == 8:
-			break
-	if scelta4 == 1:
-		break		# passo a menù utente
+	if scelta == 4 and opzione  == 1:
+		break
 
 # ===============================
 # menù iniziale utente

@@ -56,6 +56,7 @@
               <object class="GtkEntry" id="Password">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="visibility">False</property>
                 <property name="invisible_char">&#x25CF;</property>
                 <property name="invisible_char_set">True</property>
               </object>
@@ -85,8 +86,8 @@
               <object class="GtkEntry" id="PasswordNew">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="visibility">False</property>
                 <property name="invisible_char">&#x25CF;</property>
-                <property name="invisible_char_set">True</property>
               </object>
               <packing>
                 <property name="position">1</property>
