@@ -38,10 +38,21 @@ class quizadmin:
 		self.wTree.add_from_file(self.gladefile)
 		# intercetta i segnali
 		self.wTree.connect_signals(dic)
-	
-	def menu11(self,widget):
+
+	def menu11(self,widget):		
 		self.Scelta  = 1
 		self.Opzione = 1
+		# =============================
+		# testi per widget gtktextview
+		# inizializzo textview
+		#textview = gtk.TextView()
+		#textview=self.gladefile.get_widget(Testo1)
+		# puntatore del buffer
+		#textbuffer = gtk.TextBuffer()
+		# emetto a video
+		#textbuffer.set_text('Scriviamo qualcosa all\'interno della TextView')
+		#risp=raw_input(" un tasto qualsiasi per continuare ")
+		# =============================
 		self.fine(widget)
 
 	def menu12(self,widget):
@@ -78,7 +89,7 @@ class quizadmin:
 		self.Scelta  = 4
 		self.Opzione = 1
 		self.fine(widget)
-		
+	
 	def main(self):
 		gtk.main()
 		RispFun= []

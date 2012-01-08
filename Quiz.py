@@ -25,79 +25,9 @@ def pgmstart():
 	# Inizializzazione oggetto questionario
 	Quest1 = Questionario.Questionario(db1)
 
-
 def pgmend():
 	db1.connection_off()
 	sys.exit(0)
-
-def menu(num):
-	if num == 0:
-		print "\n=========================================="
-		print "         MENU' PRINCIPALE"
-		print "\nScegli un'operazione: "
-		print "1 - Gestione utenti"
-		print "2 - Gestione materie"
-		print "3 - Gestione domande"
-		print "4 - Gestione questionari"
-		print ""
-		print "9 - Fine"
-		print "=========================================="	
-		opzioni = (1,2,3,4,9)
-	elif num == 1:
-		print "\n=========================================="
-		print "         MENU' GESTIONE UTENTE"
-		print "\nScegli un'operazione: "
-		print "1 - Visualizza la lista degli utenti"
-		print "2 - Cancella utente"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,2,8,9)
-	elif num == 2:
-		print "\n=========================================="
-		print "         MENU' GESTIONE MATERIE"
-		print "\nScegli un'operazione: "
-		print "1 - Crea un nuova materia"
-		print "2 - Modifica materia"
-		print "3 - Cancella materia"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,2,3,8,9)
-	elif num == 3:
-		print "\n=========================================="
-		print "         MENU' GESTIONE DOMANDE"
-		print "\nScegli un'operazione: "
-		print "1 - Crea domande"
-		print "2 - Cancella domande e risposte"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,2,8,9)
-	elif num == 4:
-		print "\n=========================================="
-		print "         MENU' GESTIONE QUESTIONARI"
-		print "\nScegli un'operazione: "
-		print "1 - vai a menù utente"
-		print ""
-		print "8 - Ritorna al menù principale"
-		print "9 - Fine"
-		print "=========================================="
-		opzioni = (1,8,9)
-	else:
-		print "errore pgm"
-		continua()
-		pgmend()
-
-	scelta = sceltamenu(opzioni)		
-	# fine e chiusura programma
-	if scelta == 9:
-		pgmend()
-
-	return scelta
 	
 def risultato(id_quest):
 	record   = Quest1.dati_quest(id_quest)
@@ -149,7 +79,6 @@ def risultato(id_quest):
 		print "risposta ok    ", risp_ok
 		print "risposte errate", risp_err
 		print "Giudizio finale", giudizio
-
 
 def listarisposteid(id_domanda):
 	print "\n\nLISTA RISPOSTE PRESENTI NELLA DOMANDA CON ID: "+str(id_domanda)
@@ -203,22 +132,9 @@ def listautenti():
 	else:
 		cont=1
 		for row in lista:
-			print str(cont) + " " +row[0]+ "      id:" +str(row[1]) 
+			print str(cont) + " " +row[0]+ "\t      id:" +str(row[1]) 
 			cont=cont+1
 	return lista
-
-def sceltamenu(opzioni):
-	err = False
-	while not err:
-		try:
-			scelta= input("Opzione: ")
-		except:
-			errormessag("hai digitato una opzione non valida!.")		
-			continue
-		if not scelta in opzioni:
-			errormessag("hai digitato una opzione non valida!.")
-		err = True
-	return scelta
 		
 def rispsino(s):
 		risp=""
@@ -277,7 +193,6 @@ while user_admin:
 	opzione  = RispFun[2]
 	
 	# fine e chiusura programma
-	print scelta, opzione
 	if finepgm:
 		pgmend()
 	
@@ -604,7 +519,6 @@ while not risp:
 		msg     = RispFun[1]
 		if err:
 			print "ATTENZIONE: ",msg
-
 
 # giudizione finale
 risultato(id_quest)
